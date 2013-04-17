@@ -1,6 +1,6 @@
 " An example for a vimrc file.
 "
-" Maintainer:  Bram Moolenaar <Bram@vim.org>
+" Maintainer:	Bram Moolenaar <Bram@vim.org>
 " Last change:	2008 Dec 17
 "
 " To use it, copy it to
@@ -30,6 +30,13 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 set ignorecase		" ingnore case while searching
+
+" No tabes in source file
+" all tabs are 4 spaces
+:set tabstop=4
+:set shiftwidth=4
+:set expandtab
+":retab "use retab to change exsisting tabs
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -65,6 +72,7 @@ if has("autocmd")
   " Set syntax highlighting for sub and rst files to cvdt.
   au BufRead,BufNewFile *.sub set filetype=cvdt
   au BufRead,BufNewFile *.rst set filetype=cvdt
+  au BufRead,BufNewFile *.ssi set filetype=cvdt
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -93,9 +101,13 @@ endif " has("autocmd")
 
 set nowrap
 
-" allow for ctrl-v, ctrl-c, ctrl-x
+" allow for ctrl-c, ctrl-x
 source $VIMRUNTIME/mswin.vim
 behave mswin
+if has ('win32')
+    " Avoid mswin.vim making Ctrl-V act as paste
+    noremap <C-V> <C-V>
+endif
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
