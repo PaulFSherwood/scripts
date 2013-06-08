@@ -1,2 +1,0 @@
-The first line to text.txt
-The final line to text.txt
