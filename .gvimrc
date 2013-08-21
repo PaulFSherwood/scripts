@@ -47,6 +47,16 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
+
+" vim's vimrc_example and msvim already sets up backup and swap
+" set swap(.swp),backup(~),undo(.udf) directory to vim installation
+" Please make sure the directory exists otherwise current directory will be used
+set dir=C:\\Temp//,.,c:\\tmp,c:\\temp
+set backupdir=C:\\Temp//,.,c:\\tmp,c:\\temp
+" Remember the undo history for file, doesn't work with file collisions
+" set udf
+" set udir=D:\\soft\\installed\\Vim\\undo//,.,c:\\tmp,c:\\temp
+
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a
@@ -99,6 +109,7 @@ else
 endif " has("autocmd")
 
 set nowrap
+set guioptions+=b
 
 " allow for ctrl-c, ctrl-x
 source $VIMRUNTIME/mswin.vim
