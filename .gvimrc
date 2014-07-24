@@ -1,6 +1,6 @@
 "
 " Maintainer:	Paul Sherwood
-" Last change:	2013 Apr 17
+" Last change:	2014 July 24
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
@@ -13,8 +13,10 @@ if v:progname =~? "evim"
   finish
 endif
 
-colorscheme darkblue
-set nu!
+colorscheme murphy
+set nu!     " set line numbering 
+set ai      " set autoindenting
+set si      " set smart indenting
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -46,16 +48,6 @@ map Q gq
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
-
-
-" vim's vimrc_example and msvim already sets up backup and swap
-" set swap(.swp),backup(~),undo(.udf) directory to vim installation
-" Please make sure the directory exists otherwise current directory will be used
-set dir=C:\\Temp//,.,c:\\tmp,c:\\temp
-set backupdir=C:\\Temp//,.,c:\\tmp,c:\\temp
-" Remember the undo history for file, doesn't work with file collisions
-" set udf
-" set udir=D:\\soft\\installed\\Vim\\undo//,.,c:\\tmp,c:\\temp
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -109,15 +101,14 @@ else
 endif " has("autocmd")
 
 set nowrap
-set guioptions+=b
 
 " allow for ctrl-c, ctrl-x
 source $VIMRUNTIME/mswin.vim
 behave mswin
-if has ('win32')
+" if has ('win32')
     " Avoid mswin.vim making Ctrl-V act as paste
     noremap <C-V> <C-V>
-endif
+" endif
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
