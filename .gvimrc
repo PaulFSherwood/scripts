@@ -1,6 +1,9 @@
 "
 " Maintainer:	Paul Sherwood
-" Last change:	2014 July 24
+" Last change:	2022 September 10
+"
+" CHANGE 1
+" added relative line number, this probably should be a toggle in the future
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
@@ -14,9 +17,10 @@ if v:progname =~? "evim"
 endif
 
 colorscheme murphy
-set nu!     " set line numbering 
-set ai      " set autoindenting
-set si      " set smart indenting
+set nu!     			" set line numbering
+set relativenumber		" use relative line numbering
+set ai      			" set autoindenting
+set si      			" set smart indenting
 
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
