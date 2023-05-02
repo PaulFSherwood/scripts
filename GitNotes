@@ -1,0 +1,24 @@
+1) Pull changes from the remote repository:
+git pull origin main
+
+2) Create a new branch for your changes:
+git checkout -b new-branch-name
+
+3) Make changes to the files in your local repository using your preferred text editor or IDE.
+4) Stage the changes you made:
+git add <file-names>
+
+5) Commit the changes with a descriptive message:
+git commit -m "Description of changes"
+
+6) Push the changes to the remote repository:
+git push origin new-branch-name
+
+7) Go to the GitHub website and create a pull request for the new-branch-name branch.
+8) Wait for the pull request to be reviewed and approved by a team member.
+9) Once the pull request is approved, merge the changes into the main branch using the merge button on the GitHub website.
+10) Delete the new-branch-name branch:
+git branch -d new-branch-name
+
+11) Pull changes from the remote repository to ensure that you have the latest version of the code:
+git pull origin main
