@@ -33,6 +33,29 @@ function whereis-alias {
     Write-Output "The profile script is located at: C:\Users\$env:USERNAME\OneDrive\Documents\WindowsPowerShell"
 }
 
+# for discussion code snippets
+function Disscussion-Code-Snippet {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$file,
+        
+        [Parameter(Mandatory=$true)]
+        [string]$type
+    )
+    
+    $fileContents = Get-Content -Path $file -Raw
+    
+    $output = @"
+## https://clt.champlain.edu/kb/inserting-code-snippets/
+<pre class="line-numbers">
+<code class="language-$type">
+$fileContents
+   </code>
+</pre>
+"@
+    Write-Output $output
+}
+
 # Define an alias for the Go-Documents function
 New-Alias -Name sdev-algo -Value Go-SDEV-345-81
 
@@ -45,6 +68,7 @@ New-Alias -Name project -Value Go-PROJECT
 # Define an alias to compile C++ files with g++ and c++11
 New-Alias -Name compile -Value Go-COMPILE-C++
 
+New-Alias -Name discussion-snippet -Value Disscussion-Code-Snippet
 
 # Import the Chocolatey Profile that contains the necessary code to enable
 # tab-completions to function for `choco`.
