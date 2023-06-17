@@ -34,7 +34,7 @@ function whereis-alias {
 }
 
 # for discussion code snippets
-function Disscussion-Code-Snippet {
+function Discussion-Code-Snippet {
     param (
         [Parameter(Mandatory=$true)]
         [string]$file,
@@ -68,7 +68,7 @@ New-Alias -Name project -Value Go-PROJECT
 # Define an alias to compile C++ files with g++ and c++11
 New-Alias -Name compile -Value Go-COMPILE-C++
 
-New-Alias -Name discussion-snippet -Value Disscussion-Code-Snippet
+New-Alias -Name discussion-snippet -Value Discussion-Code-Snippet
 
 # Import the Chocolatey Profile that contains the necessary code to enable
 # tab-completions to function for `choco`.
