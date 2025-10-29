@@ -1,8 +1,31 @@
+echo "Running .bashrc"
+######################################################################
+#  
+#   ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ▄     ▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄  
+#  █       █  █ █  █       █   ▄  █ █ █ ▄ █ █       █       █      █ 
+#  █  ▄▄▄▄▄█  █▄█  █    ▄▄▄█  █ █ █ █ ██ ██ █   ▄   █   ▄   █  ▄    █
+#  █ █▄▄▄▄▄█       █   █▄▄▄█   █▄▄█▄█       █  █ █  █  █ █  █ █ █   █
+#  █▄▄▄▄▄  █   ▄   █    ▄▄▄█    ▄▄  █       █  █▄█  █  █▄█  █ █▄█   █
+#   ▄▄▄▄▄█ █  █ █  █   █▄▄▄█   █  █ █   ▄   █       █       █       █
+#  █▄▄▄▄▄▄▄█▄▄█ █▄▄█▄▄▄▄▄▄▄█▄▄▄█  █▄█▄▄█ █▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄█                                                                       
+# 
+#   ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ 
+#  █  ▄    █       █       █  █ █  █   ▄  █ █       █
+#  █ █▄█   █   ▄   █  ▄▄▄▄▄█  █▄█  █  █ █ █ █       █
+#  █       █  █▄█  █ █▄▄▄▄▄█       █   █▄▄█▄█     ▄▄█
+#  █  ▄   ██       █▄▄▄▄▄  █   ▄   █    ▄▄  █    █   
+#  █ █▄█   █   ▄   █▄▄▄▄▄█ █  █ █  █   █  █ █    █▄▄ 
+#  █▄▄▄▄▄▄▄█▄▄█ █▄▄█▄▄▄▄▄▄▄█▄▄█ █▄▄█▄▄▄█  █▄█▄▄▄▄▄▄▄█
+#  
+######################################################################
+
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
 # If not running interactively, don't do anything
+# Makre sure we don't run unnecessary configurations
 case $- in
     *i*) ;;
       *) return;;
@@ -20,7 +43,7 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# update the values of LINES and COLUMNS.  (FOR DYNAMIC TERMINAL RESIZING)
 shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
@@ -62,31 +85,14 @@ parse_git_branch() {
     echo "[$branch]"
   fi
 }
-short_pwd() {
-  local path=$PWD
-  local count=$(ls -A | wc -l)
-
-  # Split into array
-  IFS=/ read -ra parts <<<"$path"
-  local n=${#parts[@]}
-
-  if (( n > 3 )); then
-    echo -e "\033[01;34m…/\033[01;31m${parts[n-3]}\033[01;34m/\
-\033[01;33m${parts[n-2]}\033[01;34m/\
-\033[01;32m${parts[n-1]}\033[01;34m {$count}"
-  else
-    # Just show normal path if shallow
-    echo -e "\033[01;34m$path {$count}"
-  fi
-}
-
-
 
 if [ "$color_prompt" = yes ]; then
-    PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\$(short_pwd) \[\033[01;33m\]\$(parse_git_branch)\[\033[00m\]\$ "
-
+    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    # PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] [$(parse_git_branch)]\$ '
+    PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -111,77 +117,94 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# convert wave to mp3
-# alias wav2mp3='function _wav2mp3(){ \
-#   f="${1%.wav}"; \
-#   ffmpeg -i "$f.wav" -codec:a libmp3lame -qscale:a 2 "$f.mp3"; \
-# }; _wav2mp3'
-wav2mp3() {
-  f="${1%.wav}"
-  ffmpeg -i "$f.wav" -codec:a libmp3lame -qscale:a 2 "$f.mp3"
-}
-
-# Update git in one command
-git-up() {
-        git commit -am "$1"
-        git push
-}
-# fix local repo discard local changes
-alias git-fix='git fetch && reset --hard'
-# update git in one command
-alias git-update='git-up'
-
-
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+###########################
+### ALIAS SECTION
+
+# alias functions
+git-up() {
+	git commit -am "$1"
+	git push
+}
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-# list delux
-alias ls='lsd --group-dirs first'
+
+# Used to fix Personal Project Python Problems
+alias python='/usr/local/bin/python3.9'
+alias python3='/usr/local/bin/python3.9'
+alias py='/usr/local/bin/python3.9'
+
+alias sdev-os='cd /home/sherwood/Documents/school/Bachelors\ Degree/School-SDEV-385-81'
+alias sdev-linux='cd /home/sherwood/Documents/school/Bachelors\ Degree/School-SDEV-415-81'
+alias master='cd /home/sherwood/Documents/school/Masters-Degree'
+alias MB='cd /home/sherwood/Documents/school/Masters-Degree/School-MBA-506-81'
+alias MGMT='cd /home/sherwood/Documents/school/Masters-Degree/School-MGMT-537-81'
+alias goAda='cd /home/sherwood/Documents/ada'
+alias goLaTeX='cd /home/sherwood/Documents/LaTeX/'
+alias goElec='cd /home/sherwood/Documents/electronic-game/'
+
+alias lotgd='cd /home/sherwood/Documents/cplusplus/LOTGD-Clone'
+alias goCppRefresher='cd /home/sherwood/Documents/cplusplus/antiRTFM/2025refresher'
+alias goModernCPP='cd /home/sherwood/Documents/cplusplus/modernCPP'
+alias goPlant='cd /home/sherwood/Documents/cplusplus/PlantSimulator'
+
+alias git-fix='git fetch --all && git reset --hard origin/master'
+alias git-update='git-up'
+alias gp='git pull'
+# alias compile='function _compile() { local name="${1%.*}"; g++ -std=c++11 "$1" -o "$name"; }; _compile'
+alias compile='function _compile() { local name="${1%.*}"; g++ -std=c++11 -o "$name" "${@:1}"; }; _compile'
+
+alias vim='/usr/local/bin/vim'
+alias restartKDE='sudo systemctl restart sddm'
 
 
-# Directory aliases
-alias tree='find . | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/"'
-alias goElec='cd /media/sherwood/Data/Documents/src/Electronics-Game/'
-alias goSource='cd /media/sherwood/Data/Documents/src/'
-alias goYoutube='cd /media/sherwood/Data/apps/youtube-dl'
-alias goCPP='cd /home/sherwood/Documents/src/cplusplus/'
-alias goECS='cd /home/sherwood/Documents/src/cplusplus/Entity_Component_System'
-
-# Run program
-alias goPass='cd /media/sherwood/Data/Documents/Get-P-Word/ && python3 /media/sherwood/Data/Documents/Get-P-Word/openFile4.py'
-
-countFiles() {
-    exts=()
-    for ext in "$@"; do
-        exts+=(-o -name "*$ext")
-    done
-    # Drop the first "-o" (bash slice syntax)
-    exts=("${exts[@]:1}")
-
-    find . -maxdepth 1 -type f \( "${exts[@]}" \) | wc -l
-}
+# Compiling languages and assistance
+alias AlrSetEnv='alr settings --global --set editor.cmd "code workspace.code-workspace"'
+alias AlrInitProj='alr init --bin "$1"'
 
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+findWord() {
+	local myArgs="-R -n -i --binary-files=without-match --exclude-dir=.git --color=always -E"
+	local path="." pattern=""
+
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			-up) myArgs="$myArgs -B $2"; shift 2 ;;
+			-down) myArgs="$myArgs -A $2"; shift 2 ;;
+			-i) myArgs="$myArgs -i"; shift 2 ;;
+			*) break ;;
+		esac
+	done
+
+	# Pattern (required) and optional path
+	pattern="${1:-}"; shift || true
+	[[ -z "$pattern" ]] && { echo "Usage: findWord [-up N] [-down M] [-i] -- PATTERN [PATH]"; return 1; }
+	[ $# -gt 0 ] & path="$1"
+
+	# Run grep 
+	echo "grep $myArgs -- $pattern $path"
+	local commands="$myArgs $pattern $path"
+	grep $commands
+}
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-alias edge='firejail --noprofile --net=none /usr/bin/microsoft-edge file:///media/sherwood/Data/Thru_The_Bible/calendar.pdf'
-
-# Start winows with only C drive
-alias gogoWindows="sudo qemu-system-x86_64 -enable-kvm -m 16G -cpu host -smp 6 -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd -drive if=pflash,format=raw,file=/usr/share/OVMF/OVMF_VARS_4M.fd -drive file=/dev/nvme0n1,format=raw,if=ide -boot c"
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+[[ -f ~/.bash_profile ]] && source ~/.bash_profile
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -193,3 +216,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+PATH="/opt/gnatstudio/bin:$PATH"; export PATH
+# Add personal directory to th path
+export PATH=$PATH:/home/sherwood/bin
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
