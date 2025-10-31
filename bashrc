@@ -171,6 +171,16 @@ alias AlrInitProj='alr init --bin "$1"'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# convert wave to mp3
+# alias wav2mp3='function _wav2mp3(){ \
+#   f="${1%.wav}"; \
+#   ffmpeg -i "$f.wav" -codec:a libmp3lame -qscale:a 2 "$f.mp3"; \
+# }; _wav2mp3'
+wav2mp3() {
+  f="${1%.wav}"
+  ffmpeg -i "$f.wav" -codec:a libmp3lame -qscale:a 2 "$f.mp3"
+}
+
 findWord() {
 	local myArgs="-R -n -i --binary-files=without-match --exclude-dir=.git --color=always -E"
 	local path="." pattern=""
@@ -193,6 +203,38 @@ findWord() {
 	echo "grep $myArgs -- $pattern $path"
 	local commands="$myArgs $pattern $path"
 	grep $commands
+}
+
+countFiles() {
+    exts=()
+    for ext in "$@"; do
+        exts+=(-o -name "*$ext")
+    done
+    # Drop the first "-o" (bash slice syntax)
+    exts=("${exts[@]:1}")
+
+    find . -maxdepth 1 -type f \( "${exts[@]}" \) | wc -l
+}
+
+# Combine all .cpp and .hpp into a single .txt file.
+combineFiles() {
+  local out="$1"
+  if [[ -z "$out" ]]; then
+    echo "Usage: bundle_cpp <output>.txt"
+    return 2
+  fi
+  [[ "$out" != *.txt ]] && out="${out}.txt"
+
+  find . -type f \( -name '*.cpp' -o -name '*.hpp' \) \
+    ! -path './.git/*' ! -path './build/*' -print0 \
+  | sort -z \
+  | while IFS= read -r -d '' f; do
+      printf "===== FILE: %s =====\n" "$f"
+      cat "$f"
+      printf "\n\n"
+    done > "$out"
+
+  echo "Wrote $out"
 }
 
 # Alias definitions.
