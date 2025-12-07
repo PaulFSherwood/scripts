@@ -85,14 +85,37 @@ parse_git_branch() {
     echo "[$branch]"
   fi
 }
+short_pwd() {
+  local path=$PWD
+  local count=$(ls -A | wc -l)
+
+  IFS=/ read -ra parts <<<"$path"
+  local n=${#parts[@]}
+
+  # Colors (must NOT use \[ \])
+  local c1="\033[1;31m"   # red
+  local c2="\033[1;33m"   # yellow
+  local c3="\033[1;35m"   # purple
+  local c4="\033[1;32m"   # green
+  local reset="\033[0m"
+
+  if (( n > 3 )); then
+    echo -e "…/${c1}${parts[n-3]}${reset}/${c2}${parts[n-2]}${reset}/${c3}${parts[n-1]}${reset} ${c4}{${count}}"
+  else
+    echo -e "${c1}$path${reset} {$count}"
+  fi
+}
+
+
 
 if [ "$color_prompt" = yes ]; then
-    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    # PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] [$(parse_git_branch)]\$ '
-    PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
+  #     PS1="\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:$(short_pwd) \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]$ "
+  PS1='\[\e]0;\u@\h: \w\a\]\
+    \[\033[01;32m\]\u@\h\[\033[00m\]:\
+    \[\033[01;34m\]$(short_pwd)\[\033[00m\] \
+    \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
 else
-    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
