@@ -156,6 +156,9 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# Show directory tree structure
+alias tree='find . | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/"'
+
 # Used to fix Personal Project Python Problems
 alias python='/usr/local/bin/python3.9'
 alias python3='/usr/local/bin/python3.9'
