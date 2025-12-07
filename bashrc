@@ -111,9 +111,9 @@ short_pwd() {
 if [ "$color_prompt" = yes ]; then
   #     PS1="\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:$(short_pwd) \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]$ "
   PS1='\[\e]0;\u@\h: \w\a\]\
-    \[\033[01;32m\]\u@\h\[\033[00m\]:\
-    \[\033[01;34m\]$(short_pwd)\[\033[00m\] \
-    \[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
+\[\033[01;32m\]\u@\h\[\033[00m\]:\
+\[\033[01;34m\]$(short_pwd)\[\033[00m\] \
+\[\033[01;33m\]$(parse_git_branch)\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
